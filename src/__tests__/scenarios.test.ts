@@ -1,5 +1,5 @@
 import { AirportFeeProcessor } from '../fee-processors/AirportFeeProcessor';
-import { MallFeeProcessor } from '../fee-processors/MallFareProcessor';
+import { MallFeeProcessor } from '../fee-processors/MallFeeProcessor';
 import { StadiumFeeProcessor } from '../fee-processors/StadiumFeeProcessor';
 import { Lot } from '../Lot';
 import { Vehicle } from '../Vehicle';
