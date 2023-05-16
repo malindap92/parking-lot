@@ -39,7 +39,7 @@ export class AirportFeeProcessor implements IFeeProcessor {
     }
 
     if (hours >= 12 && hours < 24) {
-      return 80; // 60 for first 12 hours, 80 for next 12 hours.
+      return 80;
     }
 
     return Math.ceil(hours / 24) * 100;
