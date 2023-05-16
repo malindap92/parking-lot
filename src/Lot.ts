@@ -14,6 +14,7 @@ export class Lot {
   ) {}
 
   park(vehicle: Vehicle): Ticket {
+    // Check the next available spot for the vehicle type and generate a Ticket.
     for (const spot of this.spots) {
       if (spot.vehicleTypes.includes(vehicle) && spot.isAvailable) {
         spot.isAvailable = false;
@@ -27,18 +28,22 @@ export class Lot {
       }
     }
 
+    // No available spots therefore throw an error.
     throw new Error(`No available spots for ${vehicle}`);
   }
 
   unpark(ticket: Ticket): Reciept {
+    // Calculate number of hours from entry to exit date/time.
     const exitDateTime = new Date();
     ticket.exitDateTime = exitDateTime;
 
     const hoursDiff =
       (ticket.exitDateTime.getTime() - ticket.entryDateTime.getTime()) / 36e5;
 
+    // Calculate fee.
     const fee = this.feeProcessor.calculate(hoursDiff, ticket.vehicle);
 
+    // Free up the spot.
     for (const spot of this.spots) {
       if (spot.number === ticket.spotNumber) {
         spot.isAvailable = true;
@@ -46,6 +51,7 @@ export class Lot {
       }
     }
 
+    // Generate receipt.
     return new Reciept(
       `R-${(++this.incrementalReceiptNumber).toString().padStart(3, '0')}`,
       ticket,
@@ -53,6 +59,9 @@ export class Lot {
     );
   }
 
+  /**
+   * Builder class to create a parking lot with require vehicle spot allocations.
+   */
   static Builder = class Builder {
     private smallSpots = 0;
     private mediumSpots = 0;

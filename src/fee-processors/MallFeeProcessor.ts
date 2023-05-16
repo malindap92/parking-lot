@@ -16,8 +16,6 @@ export class MallFeeProcessor implements IFeeProcessor {
       case Vehicle.BUS:
       case Vehicle.TRUCK:
         return hours * 50;
-      default:
-        throw new Error('Unsupported vehicle type');
     }
   }
 }
