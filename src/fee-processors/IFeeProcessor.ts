@@ -1,5 +1,5 @@
-import { CompletedTicket } from '../Ticket';
+import { Vehicle } from '../Vehicle';
 
 export interface IFeeProcessor {
-  calculate: (ticket: CompletedTicket) => number;
+  calculate: (hoursDiff: number, vehicle: Vehicle) => number;
 }

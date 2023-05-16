@@ -1,14 +1,11 @@
 import { IFeeProcessor } from './IFeeProcessor';
-import { CompletedTicket } from '../Ticket';
 import { Vehicle } from '../Vehicle';
 
 export class AirportFeeProcessor implements IFeeProcessor {
-  calculate(ticket: CompletedTicket): number {
-    const hours = Math.floor(
-      (ticket.exitDateTime.getTime() - ticket.entryDateTime.getTime()) / 36e5,
-    );
+  calculate(hoursDiff: number, vehicle: Vehicle): number {
+    const hours = Math.floor(hoursDiff);
 
-    switch (ticket.vehicle) {
+    switch (vehicle) {
       case Vehicle.MOTORCYCLE:
       case Vehicle.SCOOTER:
         return this.calculateForSmallVehicles(hours);
@@ -16,11 +13,11 @@ export class AirportFeeProcessor implements IFeeProcessor {
       case Vehicle.SUV:
         return this.calculateForMediumVehicles(hours);
       default:
-        throw new Error(`Unsupported vehicle type: ${ticket.vehicle}`);
+        throw new Error(`Unsupported vehicle type: ${vehicle}`);
     }
   }
 
-  calculateForSmallVehicles(hours: number): number {
+  private calculateForSmallVehicles(hours: number): number {
     if (hours >= 0 && hours < 1) {
       return 0;
     }
@@ -36,7 +33,7 @@ export class AirportFeeProcessor implements IFeeProcessor {
     return Math.ceil(hours / 24) * 80;
   }
 
-  calculateForMediumVehicles(hours: number): number {
+  private calculateForMediumVehicles(hours: number): number {
     if (hours >= 0 && hours < 12) {
       return 60;
     }

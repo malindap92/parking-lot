@@ -34,11 +34,3 @@ export class Ticket {
     this._exitDateTime = date;
   }
 }
-
-export class CompletedTicket extends Ticket {
-  protected readonly _exitDateTime!: Date;
-
-  get exitDateTime(): Date {
-    return this._exitDateTime;
-  }
-}

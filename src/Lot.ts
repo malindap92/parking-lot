@@ -1,7 +1,7 @@
 import { IFeeProcessor } from './fee-processors/IFeeProcessor';
 import { Reciept } from './Reciept';
 import { Spot } from './Spot';
-import { CompletedTicket, Ticket } from './Ticket';
+import { Ticket } from './Ticket';
 import { Vehicle } from './Vehicle';
 
 export class Lot {
@@ -31,9 +31,13 @@ export class Lot {
   }
 
   unpark(ticket: Ticket): Reciept {
-    ticket.exitDateTime = new Date();
+    const exitDateTime = new Date();
+    ticket.exitDateTime = exitDateTime;
 
-    const fee = this.feeProcessor.calculate(ticket as CompletedTicket);
+    const hoursDiff =
+      (ticket.exitDateTime.getTime() - ticket.entryDateTime.getTime()) / 36e5;
+
+    const fee = this.feeProcessor.calculate(hoursDiff, ticket.vehicle);
 
     for (const spot of this.spots) {
       if (spot.number === ticket.spotNumber) {
